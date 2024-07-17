@@ -1,0 +1,16 @@
+header {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10vh;
+    width: 100%;
+    top: 0;
+    background-color: var(--tom-vermelho);
+}
+
+h4 {
+    position: relative;
+    font-size: 32px;
+    color: var(--tom-cinza-3);
+}

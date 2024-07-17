@@ -1,0 +1,66 @@
+main {
+    margin: 2%;
+}
+
+section {
+    padding: 20px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}    
+
+.criar-tarefa {
+    background-color: var(--tom-azul);
+    position: relative;
+    overflow: hidden;
+}
+
+.criar-tarefa:hover {
+    background-color: var(--tom-azul-2);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.tarefas-container {
+    display: flex;
+    gap: 2%;
+    margin: 5% 20px 20px 20px;
+}    
+
+.tarefas-container section {
+    width: 100%;
+    position: relative;
+}
+
+.lista-tarefas {
+    background-color: var(--tom-verde);
+    position: relative;
+}
+
+.lista-tarefas:hover {
+    background-color: var(--tom-verde-2);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.tarefas-fixadas {
+    background-color: var(--tom-amarelo);
+    position: relative;
+}
+
+.tarefas-fixadas:hover {
+    background-color: var(--tom-amarelo-2);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.tarefas-container section h4 {
+    position: relative;
+}
+
+.tarefas-container section h4::after {
+    content: '';
+    display: block;
+    height: 3px;
+    width: 50%;
+    background-color: var(--tom-vermelho);
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
