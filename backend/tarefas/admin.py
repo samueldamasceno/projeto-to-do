@@ -3,9 +3,9 @@ from tarefas.models import Tarefa, Usuario
 
 @admin.register(Tarefa)
 class TarefaAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'status', 'descricao')
+    list_display = ('nome', 'status')
     list_filter = ('status',)
-    search_fields = ('nome', 'descricao')
+    search_fields = ('nome',)
 
 @admin.register(Usuario)
 class UsuarioAdmin(admin.ModelAdmin):

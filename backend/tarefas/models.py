@@ -16,9 +16,7 @@ class Tarefa(models.Model):
     )
 
     nome = models.CharField(max_length=100)
-    descricao = models.TextField()
-    status = models.CharField(max_length=1, choices=STATUS)
-    usuario = models.ForeignKey(Usuario, null=True, on_delete=models.CASCADE)
+    status = models.CharField(max_length=1, choices=STATUS, default='P')
 
     def __str__(self):
         return self.nome

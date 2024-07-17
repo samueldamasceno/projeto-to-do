@@ -34,6 +34,7 @@ section {
 .lista-tarefas {
     background-color: var(--tom-verde);
     position: relative;
+    padding: 20px;
 }
 
 .lista-tarefas:hover {
@@ -63,4 +64,29 @@ section {
     background-color: var(--tom-vermelho);
     margin: 10px auto 0;
     border-radius: 2px;
+}
+
+.paginacao {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.paginacao button {
+    padding: 10px 15px;
+    background-color: var(--tom-vermelho);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.paginacao button:hover {
+    background-color: var(--tom-vermelho-2);
+}
+
+.paginacao span {
+    color: var(--tom-cinza-4);
 }
