@@ -22,6 +22,24 @@ def concluir_tarefa(request, id):
         
         tarefa.save()
         return JsonResponse({'status': 'ok', 'message': mensagem})
+    
+def fixar_tarefa(request, id):
+    if request.method == 'PUT':
+        tarefa = get_object_or_404(Tarefa, pk=id)
+        tarefa.fixada = True
+        tarefa.save()
+        return JsonResponse({'status': 'ok','message': 'Tarefa fixada'})
+    else:
+        return JsonResponse({'status': 'error','message': 'Método não permitido'})
+
+def desafixar_tarefa(request, id):
+    if request.method == 'PUT':
+        tarefa = get_object_or_404(Tarefa, pk=id)
+        tarefa.fixada = False
+        tarefa.save()
+        return JsonResponse({'status': 'ok','message': 'Tarefa desfixada'})
+    else:
+        return JsonResponse({'status': 'error','message': 'Método não permitido'})
 
 class TarefaPendenteViewSet(viewsets.ModelViewSet):
     queryset = Tarefa.objects.filter(status='P')
@@ -32,6 +50,13 @@ class TarefaPendenteViewSet(viewsets.ModelViewSet):
 
 class TarefaConcluidaViewSet(viewsets.ModelViewSet):
     queryset = Tarefa.objects.filter(status='C')
+    serializer_class = TarefaSerializer
+
+    def get_object(self):
+        return get_object_or_404(Tarefa, pk=self.kwargs['pk'])
+
+class TarefaFixadaViewSet(viewsets.ModelViewSet):
+    queryset = Tarefa.objects.filter(fixada='True')
     serializer_class = TarefaSerializer
 
     def get_object(self):

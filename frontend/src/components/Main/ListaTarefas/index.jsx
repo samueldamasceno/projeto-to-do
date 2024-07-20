@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import alfinete from '../../../../src/img/alfinete.png';
 
-function ListaTarefas({ tarefas, onConcluirTarefa }) {
+function ListaTarefas({ tarefas, onConcluirTarefa, onFixarTarefa }) {
     const [paginaAtual, setPaginaAtual] = useState(1);
     const tarefasPorPagina = 10;
 
@@ -22,12 +23,21 @@ function ListaTarefas({ tarefas, onConcluirTarefa }) {
         }
     }
 
+    const fixarTarefa = (idTarefa) => {
+        onFixarTarefa(idTarefa);
+    }
+
     return (
         <section className="lista-tarefas">
             <h4>Lista de Tarefas</h4>
             <ul>
                 {tarefasParaMostrar.map(tarefa => (
-                    <li className="tarefa" key={tarefa.id} onClick={() => onConcluirTarefa(tarefa.id)}>{tarefa.nome}</li>
+                    <li className="tarefa" key={tarefa.id} onClick={() => onConcluirTarefa(tarefa.id)}>
+                        <span>{tarefa.nome}</span>
+                        <button>
+                            <img src={alfinete} alt="Fixar tarefa" onClick={(e) => {e.stopPropagation(); fixarTarefa(tarefa.id)}} />
+                        </button>
+                    </li>
                 ))}
             </ul>
             {paginas > 1 && (
