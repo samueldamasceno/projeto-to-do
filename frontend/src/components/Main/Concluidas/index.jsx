@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 
-function ListaTarefas({ tarefas, onConcluirTarefa }) {
+function Concluidas({ tarefas, onConcluirTarefa }) {
     const [paginaAtual, setPaginaAtual] = useState(1);
-    const tarefasPorPagina = 10;
+    const tarefasPorPagina = 20;
 
     const indexUltimaTarefa = paginaAtual * tarefasPorPagina;
     const indexPrimeiraTarefa = indexUltimaTarefa - tarefasPorPagina;
     const tarefasParaMostrar = tarefas.slice(indexPrimeiraTarefa, indexUltimaTarefa);
+    
+    const coluna1 = tarefasParaMostrar.slice(0, 10);
+    const coluna2 = tarefasParaMostrar.slice(10, 20);
     
     const paginas = Math.ceil(tarefas.length / tarefasPorPagina);
 
@@ -23,13 +26,20 @@ function ListaTarefas({ tarefas, onConcluirTarefa }) {
     }
 
     return (
-        <section className="lista-tarefas">
-            <h4>Lista de Tarefas</h4>
-            <ul>
-                {tarefasParaMostrar.map(tarefa => (
+        <section className="lista-concluidas">
+            <h4>Tarefas Concluídas</h4>
+            <div className="colunas">
+                <ul className="coluna">
+                    {coluna1.map(tarefa => (
                     <li className="tarefa" key={tarefa.id} onClick={() => onConcluirTarefa(tarefa.id)}>{tarefa.nome}</li>
-                ))}
-            </ul>
+                    ))}
+                </ul>
+                <ul className="coluna">
+                    {coluna2.map(tarefa => (
+                        <li className="tarefa" key={tarefa.id} onClick={() => onConcluirTarefa(tarefa.id)}>{tarefa.nome}</li>
+                    ))}
+                </ul>
+            </div>
             {paginas > 1 && (
                 <div className="paginacao">
                     <button onClick={paginaAnterior} disabled={paginaAtual === 1}>
@@ -45,4 +55,4 @@ function ListaTarefas({ tarefas, onConcluirTarefa }) {
     );
 }
 
-export default ListaTarefas;
+export default Concluidas;
