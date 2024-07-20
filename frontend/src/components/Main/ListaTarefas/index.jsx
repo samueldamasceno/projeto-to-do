@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import alfinete from '../../../../src/img/alfinete.png';
+import alfinete from '../../../img/alfinete.png';
+import alfineteBranco from '../../../img/alfinete-branco.png'
 
-function ListaTarefas({ tarefas, onConcluirTarefa, onFixarTarefa }) {
+function ListaTarefas({ tarefas, onConcluirTarefa, onFixarTarefa, onDesafixarTarefa }) {
     const [paginaAtual, setPaginaAtual] = useState(1);
     const tarefasPorPagina = 10;
 
@@ -27,6 +28,10 @@ function ListaTarefas({ tarefas, onConcluirTarefa, onFixarTarefa }) {
         onFixarTarefa(idTarefa);
     }
 
+    const desafixarTarefa = (idTarefa) => {
+        onDesafixarTarefa(idTarefa)
+    }
+
     return (
         <section className="lista-tarefas">
             <h4>Lista de Tarefas</h4>
@@ -34,9 +39,16 @@ function ListaTarefas({ tarefas, onConcluirTarefa, onFixarTarefa }) {
                 {tarefasParaMostrar.map(tarefa => (
                     <li className="tarefa" key={tarefa.id} onClick={() => onConcluirTarefa(tarefa.id)}>
                         <span>{tarefa.nome}</span>
+                        {tarefa.fixada && (
                         <button>
-                            <img src={alfinete} alt="Fixar tarefa" onClick={(e) => {e.stopPropagation(); fixarTarefa(tarefa.id)}} />
+                            <img src={alfinete} alt="Fixar tarefa" onClick={(e) => {e.stopPropagation(); desafixarTarefa(tarefa.id)}} />
                         </button>
+                        )}
+                        {!tarefa.fixada && (
+                        <button>
+                            <img src={alfineteBranco} alt="Desafixar tarefa" onClick={(e) => {e.stopPropagation(); fixarTarefa(tarefa.id)}} />
+                        </button>
+                        )}
                     </li>
                 ))}
             </ul>

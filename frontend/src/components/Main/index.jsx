@@ -117,6 +117,11 @@ function Main() {
             if (tarefasPendentes.includes(tarefaAtualizada)) {
                 setTarefasPendentes(tarefasPendentes.filter(tarefa => tarefa.id !== id));
                 setTarefasConcluidas([...tarefasConcluidas, { ...tarefaAtualizada, status: 'C' }]);
+
+                if (tarefasFixadas.includes(tarefaAtualizada)) {
+                    setTarefasFixadas(tarefasFixadas.filter(tarefa => tarefa.id!== id));
+                }
+
             } else {
                 setTarefasConcluidas(tarefasConcluidas.filter(tarefa => tarefa.id !== id));
                 setTarefasPendentes([...tarefasPendentes, { ...tarefaAtualizada, status: 'P' }]);
@@ -147,7 +152,7 @@ function Main() {
             if (!tarefaAtualizada) {
                 throw new Error('Tarefa não encontrada');
             } else {
-                setTarefasFixadas([...tarefasFixadas, tarefaAtualizada]);
+                setTarefasFixadas([...tarefasFixadas, { ...tarefaAtualizada, fixada: true }]);
             }
 
         } catch (error) {
@@ -188,7 +193,7 @@ function Main() {
         <main>
             <CriarTarefa onAdicionarTarefa={adicionarTarefa} />
             <div className="tarefas-container">
-                <ListaTarefas tarefas={tarefasPendentes} onConcluirTarefa={concluirTarefa} onFixarTarefa={fixarTarefa}/>
+                <ListaTarefas tarefas={tarefasPendentes} onConcluirTarefa={concluirTarefa} onFixarTarefa={fixarTarefa} onDesafixarTarefa={desafixarTarefa}/>
                 <Fixadas tarefas={tarefasFixadas} onConcluirTarefa={concluirTarefa} onDesafixarTarefa={desafixarTarefa}/>
             </div>
                 <Concluidas tarefas={tarefasConcluidas} onConcluirTarefa={concluirTarefa}/>
