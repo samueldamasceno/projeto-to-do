@@ -4,8 +4,8 @@ from rest_framework.decorators import api_view
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse, request
 
-from .models import Tarefa, Usuario
-from .serializers import TarefaSerializer, UsuarioSerializer
+from .models import Tarefa
+from .serializers import TarefaSerializer
 
 @api_view(['PUT'])
 def concluir_tarefa(request, id):
@@ -61,10 +61,4 @@ class TarefaFixadaViewSet(viewsets.ModelViewSet):
 
     def get_object(self):
         return get_object_or_404(Tarefa, pk=self.kwargs['pk'])
-
-class UsuarioViewSet(viewsets.ModelViewSet):
-    queryset = Usuario.objects.all()
-    serializer_class = UsuarioSerializer
-
-    def get_object(self):
-        return get_object_or_404(Usuario, pk=self.kwargs['pk'])
+    

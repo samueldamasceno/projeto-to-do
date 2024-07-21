@@ -4,7 +4,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.http import JsonResponse
 from rest_framework.routers import DefaultRouter
 from .views import \
-TarefaConcluidaViewSet, TarefaPendenteViewSet, UsuarioViewSet, concluir_tarefa, TarefaFixadaViewSet, fixar_tarefa, desafixar_tarefa
+TarefaConcluidaViewSet, TarefaPendenteViewSet, concluir_tarefa, TarefaFixadaViewSet, fixar_tarefa, desafixar_tarefa
 
 @ensure_csrf_cookie
 def get_csrf_token(request):
@@ -14,7 +14,6 @@ router = DefaultRouter()
 router.register(r'tarefas-concluidas', TarefaConcluidaViewSet, basename='tarefas-concluidas')
 router.register(r'tarefas-pendentes', TarefaPendenteViewSet, basename='tarefas-pendentes')
 router.register(r'tarefas-fixadas', TarefaFixadaViewSet, basename='tarefas-fixadas')
-router.register(r'usuarios', UsuarioViewSet, basename='usuarios')
 
 urlpatterns = [
     path('csrf-token/', get_csrf_token),
