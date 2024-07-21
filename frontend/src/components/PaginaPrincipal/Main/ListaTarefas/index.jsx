@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import alfinete from '../../../img/alfinete.png';
-import alfineteBranco from '../../../img/alfinete-branco.png'
+import alfinete from '../../../../img/alfinete.png';
+import alfineteBranco from '../../../../img/alfinete-branco.png'
 
 function ListaTarefas({ tarefas, onConcluirTarefa, onFixarTarefa, onDesafixarTarefa }) {
     const [paginaAtual, setPaginaAtual] = useState(1);

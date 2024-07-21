@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import alfinete from '../../../../src/img/alfinete.png';
+import alfinete from '../../../../img/alfinete.png';
 
 function Fixadas({ tarefas, onConcluirTarefa, onDesafixarTarefa }) {
 

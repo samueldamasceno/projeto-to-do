@@ -1,6 +1,7 @@
 header {
     position: relative;
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
     justify-content: center;
     align-items: center;
     height: 10vh;
@@ -13,4 +14,43 @@ h4 {
     position: relative;
     font-size: 32px;
     color: var(--tom-cinza-3);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.titulo:hover{
+    color: var(--tom-vermelho-2);
+}
+
+.btn-container {
+    display: flex;
+    justify-content:flex-end;
+    gap: 5%;
+    margin-right: 10%;
+}
+
+.btn-container button {
+    font-family: var(--fonte-3);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: var(--tom-cinza-3);
+    transition: background-color 0.3s;
+}
+
+.btn-cad {
+    background-color: var(--tom-azul);
+}
+
+.btn-cad:hover {
+    background-color: var(--tom-azul-2);
+}
+
+.btn-login {
+    background-color: var(--tom-amarelo);
+}
+
+.btn-login:hover {
+    background-color: var(--tom-amarelo-2);
 }

@@ -1,15 +1,23 @@
 import './App.css';
-import Header from './components/Header';
-import Main from './components/Main';
-import Footer from './components/Footer';
+import React from'react';
+
+import { BrowserRouter as Router, Route, Routes } from'react-router-dom';
+
+import PaginaPrincipal from './components/PaginaPrincipal';
+import Login from './components/Login';
+import Cadastro from './components/Cadastro';
 
 function App() {
   return (
-    <div className="App">
-      <Header />
-      <Main />
-      <Footer />
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<PaginaPrincipal />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/cadastro" element={<Cadastro />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

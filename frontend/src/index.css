@@ -95,3 +95,7 @@ ul li button:hover{
   cursor: pointer;
   background-color: var(--tom-vermelho);
 }
+
+a {
+  text-decoration: none;
+}
