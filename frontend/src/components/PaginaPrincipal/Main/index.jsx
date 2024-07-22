@@ -7,30 +7,10 @@ import ListaTarefas from './ListaTarefas';
 import Fixadas from './Fixadas';
 import Concluidas from './Concluidas';
 
-function Main() {
-    const [csrfToken, setCsrfToken] = useState('')
+import useCsrfToken from '../../../hooks/useCsrfToken';
 
-    useEffect(() => {
-        const fetchCsrfToken = async () => {
-            try {
-                const response = await fetch('http://localhost:8000/api/csrf-token/', {
-                    method: 'GET',
-                    credentials: 'include'
-                });
-    
-                if (!response.ok) {
-                    throw new Error('Erro ao buscar o token CSRF');
-                }
-    
-                const data = await response.json();
-                setCsrfToken(data.csrfToken);
-            } catch (error) {
-                console.error('Erro:', error);
-            }
-        };
-    
-        fetchCsrfToken();
-    }, []);
+function Main() {
+    const csrfToken = useCsrfToken();
 
     const [tarefasPendentes, setTarefasPendentes] = useState([]);
     const [tarefasConcluidas, setTarefasConcluidas] = useState([]);

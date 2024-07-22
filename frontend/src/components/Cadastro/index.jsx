@@ -1,33 +1,12 @@
-import './style.css'
+import './style.css';
 import Header from '../Header';
 import Footer from '../Footer';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import useCsrfToken from '../../hooks/useCsrfToken';
 
 function Cadastro () {
-    const [csrfToken, setCsrfToken] = useState('')
-
-    useEffect(() => {
-        const fetchCsrfToken = async () => {
-            try {
-                const response = await fetch('http://localhost:8000/api/csrf-token/', {
-                    method: 'GET',
-                    credentials: 'include'
-                });
-    
-                if (!response.ok) {
-                    throw new Error('Erro ao buscar o token CSRF');
-                }
-    
-                const data = await response.json();
-                setCsrfToken(data.csrfToken);
-            } catch (error) {
-                console.error('Erro:', error);
-            }
-        };
-    
-        fetchCsrfToken();
-    }, []);
+    const csrfToken = useCsrfToken()
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -36,7 +15,7 @@ function Cadastro () {
         const nome = formData.get('nome');
         const sobrenome = formData.get('sobrenome');
         const email = formData.get('email');
-        const nascimento = formData.get('nascimento')
+        const nascimento = formData.get('nascimento');
         const senha = formData.get('senha');
 
         try {
@@ -44,12 +23,13 @@ function Cadastro () {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
-                    'X-CSRFToken': csrfToken
+                    'X-CSRFToken': csrfToken,
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ nome, sobrenome, email, nascimento, senha })
             });
 
-            if(!response.ok) {
+            if (!response.ok) {
                 throw new Error('Erro ao fazer cadastro');
             }
 
@@ -58,36 +38,43 @@ function Cadastro () {
 
             e.target.reset();
 
-        } catch(error) {
+        } catch (error) {
             console.error('Erro:', error);
-        }}
+        }
+    };
 
-    return(
+    return (
         <div>
             <Header />
             <main>
                 <form onSubmit={handleSubmit}>
-                    <label>
-                        <input type="text" name="nome" placeholder='nome' required />
-                    </label>
-                    <label>
-                        <input type="text" name="sobrenome" placeholder='sobrenome' required />
-                    </label>
-                    <label>
-                        <input type="email" name="email" placeholder='email' required />
-                    </label>
-                    <label>
-                        <input type="date" name="nascimento" required />
-                    </label>
-                    <label>
-                        <input type="password" name="senha" placeholder='senha' required />
-                    </label>
+                    <div className="form-row">
+                        <label>
+                            <input type="text" name="nome" placeholder="Nome" required />
+                        </label>
+                        <label>
+                            <input type="text" name="sobrenome" placeholder="Sobrenome" required />
+                        </label>
+                    </div>
+                    <div className="form-row">
+                        <label>
+                            <input type="email" name="email" placeholder="Email" required />
+                        </label>
+                    </div>
+                    <div className="form-row">
+                        <label>
+                            <input type="date" name="nascimento" required />
+                        </label>
+                        <label>
+                            <input type="password" name="senha" placeholder="Senha" required />
+                        </label>
+                    </div>
                     <button type="submit">Cadastrar</button>
                 </form>
-                </main>
+            </main>
             <Footer />
         </div>
-    )
+    );
 }
 
 export default Cadastro;

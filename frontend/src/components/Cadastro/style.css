@@ -1,13 +1,12 @@
 main {
     display: flex;
     justify-content: center;
-    align-self: center;
+    align-items: center;
 }
 
 form {
     display: flex;
     flex-direction: column;
-    margin: 50px;
     padding: 50px;
     width: 50%;
     border: 5px solid var(--tom-cinza-3);
@@ -16,34 +15,46 @@ form {
     background-color: var(--tom-salmao);
 }
 
-form label {
-    height: 50%;
-    margin-bottom: 10%;
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.form-row label {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.form-row label:last-child {
+    margin-right: 0;
 }
 
 form input {
-    height: 90%;
+    height: 40px;
     width: 100%;
-    padding: 3%;
+    padding: 10px;
     border: none;
     border-radius: 5px;
+    font-size: 1em;
 }
 
 form input::placeholder {
     color: var(--tom-cinza-2);
-    font-size: 1.5em;
+    font-size: 1em;
 }
 
 form button {
-    height: 200px;
+    height: 50px;
     width: 100%;
-    margin-top: 10%;
+    margin-top: 20px;
     background-color: var(--tom-vermelho);
     color: var(--tom-cinza);
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
+    font-size: 1.2em;
 }
 
 form button:hover {

@@ -1,35 +1,46 @@
-from django.http import JsonResponse, request
-from django.shortcuts import get_object_or_404
-
-from rest_framework import viewsets
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from rest_framework import status
+from rest_framework.response import Response
 from rest_framework.decorators import api_view
-
 from .models import Usuario
-from.serializers import UsuarioSerializer
-
-class UsuarioViewSet(viewsets.ModelViewSet):
-    queryset = Usuario.objects.all()
-    serializer_class = UsuarioSerializer
-
-    def get_object(self):
-        return get_object_or_404(Usuario, pk=self.kwargs['pk'])
-    
-@api_view(['POST'])
-def cadastro(request):
-    serializer = UsuarioSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return JsonResponse({'mensagem': 'Usuário cadastrado com sucesso!'}, status=201)
-    return JsonResponse(serializer.errors, status=400)
+from .serializers import UsuarioSerializer
 
 @api_view(['GET'])
+def logado(request):
+    if request.user.is_authenticated:
+        return Response({'logado': True})
+    return Response({'logado': False}, status=status.HTTP_401_UNAUTHORIZED)
+
+@api_view(['POST'])
+def cadastro(request):
+    nome = request.data.get('nome')
+    sobrenome = request.data.get('sobrenome')
+    email = request.data.get('email')
+    nascimento = request.data.get('nascimento')
+    senha = request.data.get('senha')
+    
+    if not (nome and sobrenome and email and nascimento and senha):
+        return Response({'mensagem': 'Preencha todos os campos'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    if Usuario.objects.filter(email=email).exists():
+        return Response({'mensagem': 'Email já cadastrado'}, status=status.HTTP_400_BAD_REQUEST)
+    
+    usuario = Usuario.objects.create_user(email=email, senha=senha, nome=nome, sobrenome=sobrenome, data_nascimento=nascimento)
+
+    return Response({'mensagem': 'Usuário cadastrado com sucesso!'}, status=status.HTTP_201_CREATED)
+
+@api_view(['POST'])
 def login(request):
-    email = request.GET.get('email')
-    senha = request.GET.get('senha')
+    email = request.data.get('email')
+    senha = request.data.get('senha')
+    usuario = authenticate(request, username=email, password=senha)
     
-    if email and senha:
-        usuario = get_object_or_404(Usuario, email=email, senha=senha)
-        serializer = UsuarioSerializer(usuario)
-        return JsonResponse(serializer.data)
-    
-    return JsonResponse({'mensagem': 'Usuário ou senha inválidos!'}, status=401)
+    if usuario is not None:
+        auth_login(request, usuario)
+        return Response({'mensagem': 'Login efetuado com sucesso!'})
+    return Response({'mensagem': 'Usuário ou senha inválidos!'}, status=status.HTTP_401_UNAUTHORIZED)
+
+@api_view(['POST'])
+def logout(request):
+    auth_logout(request)
+    return Response({'mensagem': 'Logout efetuado com sucesso!'})
