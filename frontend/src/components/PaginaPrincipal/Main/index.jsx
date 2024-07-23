@@ -114,7 +114,6 @@ function Main() {
 
             if (!tarefaAtualizada) throw new Error('Tarefa não encontrada');
 
-            setTarefasPendentes(tarefasPendentes.filter(tarefa => tarefa.id !== id));
             setTarefasFixadas([...tarefasFixadas, { ...tarefaAtualizada, fixada: true }]);
         } catch (error) {
             console.log("Erro: ", error);
