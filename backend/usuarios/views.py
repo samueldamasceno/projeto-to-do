@@ -2,8 +2,7 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .models import Usuario
-from .serializers import UsuarioSerializer
+from django.contrib.auth.models import User
 
 @api_view(['GET'])
 def logado(request):
@@ -22,10 +21,13 @@ def cadastro(request):
     if not (nome and sobrenome and email and nascimento and senha):
         return Response({'mensagem': 'Preencha todos os campos'}, status=status.HTTP_400_BAD_REQUEST)
     
-    if Usuario.objects.filter(email=email).exists():
+    if User.objects.filter(email=email).exists():
         return Response({'mensagem': 'Email já cadastrado'}, status=status.HTTP_400_BAD_REQUEST)
     
-    usuario = Usuario.objects.create_user(email=email, senha=senha, nome=nome, sobrenome=sobrenome, data_nascimento=nascimento)
+    user = User.objects.create_user(username=email, email=email, password=senha)
+    user.first_name = nome
+    user.last_name = sobrenome
+    user.save()
 
     return Response({'mensagem': 'Usuário cadastrado com sucesso!'}, status=status.HTTP_201_CREATED)
 
@@ -33,10 +35,10 @@ def cadastro(request):
 def login(request):
     email = request.data.get('email')
     senha = request.data.get('senha')
-    usuario = authenticate(request, username=email, password=senha)
+    user = authenticate(request, username=email, password=senha)
     
-    if usuario is not None:
-        auth_login(request, usuario)
+    if user is not None:
+        auth_login(request, user)
         return Response({'mensagem': 'Login efetuado com sucesso!'})
     return Response({'mensagem': 'Usuário ou senha inválidos!'}, status=status.HTTP_401_UNAUTHORIZED)
 

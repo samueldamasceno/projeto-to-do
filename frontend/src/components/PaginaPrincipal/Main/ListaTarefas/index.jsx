@@ -1,59 +1,62 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import alfinete from '../../../../img/alfinete.png';
-import alfineteBranco from '../../../../img/alfinete-branco.png'
+import alfineteBranco from '../../../../img/alfinete-branco.png';
+import styles from './ListaTarefas.module.css';
 
-function ListaTarefas({ tarefas, onConcluirTarefa, onFixarTarefa, onDesafixarTarefa }) {
+function ListaTarefas({ tarefas, onFixarTarefa, onDesafixarTarefa, onConcluirTarefa }) {
     const [paginaAtual, setPaginaAtual] = useState(1);
-    const tarefasPorPagina = 10;
+    const [tarefasLocal, setTarefasLocal] = useState(tarefas);
 
+    useEffect(() => {
+        setTarefasLocal(tarefas);
+    }, [tarefas]);
+
+    const tarefasPorPagina = 10;
     const indexUltimaTarefa = paginaAtual * tarefasPorPagina;
     const indexPrimeiraTarefa = indexUltimaTarefa - tarefasPorPagina;
-    const tarefasParaMostrar = tarefas.slice(indexPrimeiraTarefa, indexUltimaTarefa);
-    
+    const tarefasParaMostrar = tarefasLocal.slice(indexPrimeiraTarefa, indexUltimaTarefa);
     const paginas = Math.ceil(tarefas.length / tarefasPorPagina);
 
     const proximaPagina = () => {
-        if (paginaAtual < paginas) {
-            setPaginaAtual(paginaAtual + 1);
-        }
-    }
+        if (paginaAtual < paginas) setPaginaAtual(paginaAtual + 1);
+    };
 
     const paginaAnterior = () => {
-        if (paginaAtual > 1) {
-            setPaginaAtual(paginaAtual - 1);
+        if (paginaAtual > 1) setPaginaAtual(paginaAtual - 1);
+    };
+
+    const handleFixarTarefa = (idTarefa) => {
+        const tarefa = tarefasLocal.find(tarefa => tarefa.id === idTarefa);
+
+        if (tarefa.fixada) {
+            onDesafixarTarefa(idTarefa);
+        } else {
+            onFixarTarefa(idTarefa);
         }
-    }
-
-    const fixarTarefa = (idTarefa) => {
-        onFixarTarefa(idTarefa);
-    }
-
-    const desafixarTarefa = (idTarefa) => {
-        onDesafixarTarefa(idTarefa)
-    }
+    };
 
     return (
-        <section className="lista-tarefas">
+        <section className={styles.listaTarefas}>
             <h4>Lista de Tarefas</h4>
             <ul>
                 {tarefasParaMostrar.map(tarefa => (
-                    <li className="tarefa" key={tarefa.id} onClick={() => onConcluirTarefa(tarefa.id)}>
+                    <li
+                        className={styles.tarefa}
+                        key={tarefa.id}
+                        onClick={() => onConcluirTarefa(tarefa.id)}
+                    >
                         <span>{tarefa.nome}</span>
-                        {tarefa.fixada && (
-                        <button>
-                            <img src={alfinete} alt="Fixar tarefa" onClick={(e) => {e.stopPropagation(); desafixarTarefa(tarefa.id)}} />
+                        <button onClick={(e) => { e.stopPropagation(); handleFixarTarefa(tarefa.id); }}>
+                            <img 
+                                src={tarefa.fixada ? alfinete : alfineteBranco} 
+                                alt="Fixar/Desafixar" 
+                            />
                         </button>
-                        )}
-                        {!tarefa.fixada && (
-                        <button>
-                            <img src={alfineteBranco} alt="Desafixar tarefa" onClick={(e) => {e.stopPropagation(); fixarTarefa(tarefa.id)}} />
-                        </button>
-                        )}
                     </li>
                 ))}
             </ul>
             {paginas > 1 && (
-                <div className="paginacao">
+                <div className={styles.paginacao}>
                     <button onClick={paginaAnterior} disabled={paginaAtual === 1}>
                         Anterior
                     </button>

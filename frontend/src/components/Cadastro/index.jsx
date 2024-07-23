@@ -1,9 +1,8 @@
-import './style.css';
+import React from 'react';
 import Header from '../Header';
 import Footer from '../Footer';
-
-import React from 'react';
 import useCsrfToken from '../../hooks/useCsrfToken';
+import styles from './Cadastro.module.css';
 
 function Cadastro () {
     const csrfToken = useCsrfToken()
@@ -19,7 +18,7 @@ function Cadastro () {
         const senha = formData.get('senha');
 
         try {
-            const response = await fetch('http://localhost:8000/api/cadastro/', {
+            const response = await fetch('http://localhost:8000/api/usuarios/cadastro/', {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -46,30 +45,30 @@ function Cadastro () {
     return (
         <div>
             <Header />
-            <main>
-                <form onSubmit={handleSubmit}>
-                    <div className="form-row">
+            <main className={styles.main}>
+                <form className={styles.form} onSubmit={handleSubmit}>
+                    <div className={styles.formRow}>
                         <label>
-                            <input type="text" name="nome" placeholder="Nome" required />
+                            <input type="text" name="nome" placeholder="Nome" className={styles.formInput} required />
                         </label>
                         <label>
-                            <input type="text" name="sobrenome" placeholder="Sobrenome" required />
-                        </label>
-                    </div>
-                    <div className="form-row">
-                        <label>
-                            <input type="email" name="email" placeholder="Email" required />
+                            <input type="text" name="sobrenome" placeholder="Sobrenome" className={styles.formInput} required />
                         </label>
                     </div>
-                    <div className="form-row">
+                    <div className={styles.formRow}>
                         <label>
-                            <input type="date" name="nascimento" required />
-                        </label>
-                        <label>
-                            <input type="password" name="senha" placeholder="Senha" required />
+                            <input type="email" name="email" placeholder="Email" className={styles.formInput} required />
                         </label>
                     </div>
-                    <button type="submit">Cadastrar</button>
+                    <div className={styles.formRow}>
+                        <label>
+                            <input type="date" name="nascimento" className={styles.formInput} required />
+                        </label>
+                        <label>
+                            <input type="password" name="senha" placeholder="Senha" className={styles.formInput} required />
+                        </label>
+                    </div>
+                    <button type="submit" className={styles.submitButton}>Cadastrar</button>
                 </form>
             </main>
             <Footer />

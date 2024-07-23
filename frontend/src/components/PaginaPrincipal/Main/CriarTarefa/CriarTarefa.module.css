@@ -1,0 +1,31 @@
+.criarTarefa {
+    background-color: var(--tom-azul);
+    padding: 20px;
+}
+
+.formCriar {
+    display: flex;
+    flex-direction: column;
+}
+
+.inputTarefa {
+    margin: 30px;
+    padding: 10px;
+    border: 1px solid var(--tom-cinza-2);
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.btnCriar {
+    padding: 10px;
+    background-color: var(--tom-vermelho);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btnCriar:hover {
+    background-color: var(--tom-vermelho-2);
+}

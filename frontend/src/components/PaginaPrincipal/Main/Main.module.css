@@ -1,4 +1,4 @@
-main {
+.main {
     margin: 2%;
 }
 
@@ -9,7 +9,7 @@ section {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }   
 
-section:hover{
+section:hover {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
@@ -23,35 +23,35 @@ section h4::after {
     border-radius: 2px;
 }
 
-.criar-tarefa {
+.criarTarefa {
     background-color: var(--tom-azul);
     position: relative;
     overflow: hidden;
 }
 
-.tarefas-container {
+.tarefasContainer {
     display: flex;
     gap: 2%;
     margin: 5% 20px 20px 20px;
 }    
 
-.tarefas-container section {
+.tarefasContainer section {
     width: 100%;
     position: relative;
 }
 
-.lista-tarefas {
+.listaTarefas {
     background-color: var(--tom-verde);
     position: relative;
     padding: 20px;
 }
 
-.tarefas-fixadas {
+.tarefasFixadas {
     background-color: var(--tom-amarelo);
     position: relative;
 }
 
-.tarefas-container section h4 {
+.tarefasContainer section h4 {
     position: relative;
 }
 
@@ -80,7 +80,7 @@ section h4::after {
     color: var(--tom-cinza-4);
 }
 
-.lista-concluidas {
+.listaConcluidas {
     background-color: var(--tom-salmao);
     position: relative;
     padding: 20px;
@@ -88,19 +88,19 @@ section h4::after {
     margin-bottom: 3%;
 }
 
-.lista-concluidas .colunas {
+.listaConcluidas .colunas {
     display: flex;
     justify-content: space-between;
     gap: 2%;
 }
 
-.lista-concluidas .coluna {
+.listaConcluidas .coluna {
     list-style-type: none;
     padding: 0;
     width: 48%;
 }
 
-.lista-concluidas ul li {
+.listaConcluidas ul li {
     display: flex;
     align-items: center;
     justify-content: center;

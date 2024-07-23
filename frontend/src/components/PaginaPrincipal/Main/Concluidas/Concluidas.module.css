@@ -1,0 +1,27 @@
+.listaConcluidas {
+    background-color: var(--tom-salmao);
+    padding: 20px;
+    margin-top: 5%;
+    margin-bottom: 3%;
+}
+
+.colunas {
+    display: flex;
+    justify-content: space-between;
+    gap: 2%;
+}
+
+.coluna {
+    list-style-type: none;
+    padding: 0;
+    width: 48%;
+}
+
+.coluna li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border-bottom: 1px solid var(--tom-cinza-2);
+    cursor: pointer;
+}

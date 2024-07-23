@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react';
-
-import './style.css';
+import React, { useEffect, useState } from 'react';
+import styles from './Main.module.css';
 
 import CriarTarefa from './CriarTarefa';
 import ListaTarefas from './ListaTarefas';
@@ -19,24 +18,18 @@ function Main() {
     useEffect(() => {
         const fetchTarefas = async () => {
             try {
-                const responsePendentes = await fetch('http://localhost:8000/api/tarefas-pendentes/');
-                if (!responsePendentes.ok) {
-                    throw new Error('Erro ao buscar tarefas pendentes');
-                }
+                const responsePendentes = await fetch('http://localhost:8000/api/tarefas/pendentes/');
+                if (!responsePendentes.ok) throw new Error('Erro ao buscar tarefas pendentes');
                 const dataPendentes = await responsePendentes.json();
                 setTarefasPendentes(dataPendentes);
 
-                const responseConcluidas = await fetch('http://localhost:8000/api/tarefas-concluidas/');
-                if (!responseConcluidas.ok) {
-                    throw new Error('Erro ao buscar tarefas concluídas');
-                }
+                const responseConcluidas = await fetch('http://localhost:8000/api/tarefas/concluidas/');
+                if (!responseConcluidas.ok) throw new Error('Erro ao buscar tarefas concluídas');
                 const dataConcluidas = await responseConcluidas.json();
                 setTarefasConcluidas(dataConcluidas);
 
-                const responseFixadas = await fetch('http://localhost:8000/api/tarefas-fixadas/');
-                if (!responseFixadas.ok) {
-                    throw new Error('Erro ao buscar tarefas fixadas');
-                }
+                const responseFixadas = await fetch('http://localhost:8000/api/tarefas/fixadas/');
+                if (!responseFixadas.ok) throw new Error('Erro ao buscar tarefas fixadas');
                 const dataFixadas = await responseFixadas.json();
                 setTarefasFixadas(dataFixadas);
 
@@ -52,7 +45,7 @@ function Main() {
         const novaTarefa = { nome: nomeTarefa };
 
         try {
-            const response = await fetch('http://localhost:8000/api/tarefas-pendentes/', {
+            const response = await fetch('http://localhost:8000/api/tarefas/pendentes/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -62,10 +55,7 @@ function Main() {
                 credentials: 'include',
             });
 
-            if (!response.ok) {
-                throw new Error('Erro ao adicionar tarefa');
-            }
-
+            if (!response.ok) throw new Error('Erro ao adicionar tarefa');
             const tarefaCriada = await response.json();
             setTarefasPendentes([...tarefasPendentes, tarefaCriada]);
         } catch (error) {
@@ -75,7 +65,7 @@ function Main() {
 
     const concluirTarefa = async (id) => {
         try {
-            const resposta = await fetch(`http://localhost:8000/api/concluir/${id}`, {
+            const resposta = await fetch(`http://localhost:8000/api/tarefas/concluir/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -83,38 +73,33 @@ function Main() {
                 },
                 credentials: 'include',
             });
-    
-            if (!resposta.ok) {
-                throw new Error('Erro ao mudar status da tarefa');
-            }
-    
-            const tarefaAtualizada = tarefasPendentes.find(tarefa => tarefa.id === id) || tarefasConcluidas.find(tarefa => tarefa.id === id);
-    
-            if (!tarefaAtualizada) {
-                throw new Error('Tarefa não encontrada');
-            }
-    
-            if (tarefasPendentes.includes(tarefaAtualizada)) {
+
+            if (!resposta.ok) throw new Error('Erro ao mudar status da tarefa');
+
+            const tarefaAtualizada = tarefasPendentes.find(tarefa => tarefa.id === id) ||
+                                     tarefasConcluidas.find(tarefa => tarefa.id === id);
+
+            if (!tarefaAtualizada) throw new Error('Tarefa não encontrada');
+
+            if (tarefasPendentes.find(tarefa => tarefa.id === id)) {
                 setTarefasPendentes(tarefasPendentes.filter(tarefa => tarefa.id !== id));
-                setTarefasConcluidas([...tarefasConcluidas, { ...tarefaAtualizada, status: 'C' }]);
-
-                if (tarefasFixadas.includes(tarefaAtualizada)) {
-                    setTarefasFixadas(tarefasFixadas.filter(tarefa => tarefa.id!== id));
-                }
-
+                setTarefasConcluidas([...tarefasConcluidas, { ...tarefaAtualizada, status: 'C', fixada: false }]);
             } else {
                 setTarefasConcluidas(tarefasConcluidas.filter(tarefa => tarefa.id !== id));
                 setTarefasPendentes([...tarefasPendentes, { ...tarefaAtualizada, status: 'P' }]);
             }
-    
+
+            if (tarefasFixadas.find(tarefa => tarefa.id === id)) {
+                setTarefasFixadas(tarefasFixadas.filter(tarefa => tarefa.id !== id));
+            }
         } catch (error) {
             console.log("Erro: ", error);
         }
     };
-    
+
     const fixarTarefa = async (id) => {
         try {
-            const resposta = await fetch(`http://localhost:8000/api/fixar/${id}`, {
+            const resposta = await fetch(`http://localhost:8000/api/tarefas/fixar/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -123,26 +108,22 @@ function Main() {
                 credentials: 'include',
             });
 
-            if (!resposta.ok) {
-                throw new Error('Erro ao fixar tarefa');
-            }
+            if (!resposta.ok) throw new Error('Erro ao fixar tarefa');
 
-            const tarefaAtualizada = tarefasPendentes.find(tarefa => tarefa.id === id)
-            
-            if (!tarefaAtualizada) {
-                throw new Error('Tarefa não encontrada');
-            } else {
-                setTarefasFixadas([...tarefasFixadas, { ...tarefaAtualizada, fixada: true }]);
-            }
+            const tarefaAtualizada = tarefasPendentes.find(tarefa => tarefa.id === id);
 
+            if (!tarefaAtualizada) throw new Error('Tarefa não encontrada');
+
+            setTarefasPendentes(tarefasPendentes.filter(tarefa => tarefa.id !== id));
+            setTarefasFixadas([...tarefasFixadas, { ...tarefaAtualizada, fixada: true }]);
         } catch (error) {
             console.log("Erro: ", error);
         }
-    }
+    };
 
     const desafixarTarefa = async (id) => {
         try {
-            const resposta = await fetch(`http://localhost:8000/api/desafixar/${id}`, {
+            const resposta = await fetch(`http://localhost:8000/api/tarefas/desafixar/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -150,33 +131,35 @@ function Main() {
                 },
                 credentials: 'include',
             });
-            
-            if (!resposta.ok) {
-                throw new Error('Erro ao desafixar tarefa');
-            }
 
-            const tarefaAtualizada = tarefasFixadas.find(tarefa => tarefa.id === id)
-            
-            if (!tarefaAtualizada) {
-                throw new Error('Tarefa não encontrada');
-            } else {
-                setTarefasFixadas(tarefasFixadas.filter(tarefa => tarefa.id!== id));
-            }
+            if (!resposta.ok) throw new Error('Erro ao desafixar tarefa');
 
-            
+            setTarefasFixadas(tarefasFixadas.filter(tarefa => tarefa.id !== id));
         } catch (error) {
             console.log("Erro: ", error);
         }
-    }
+    };
 
     return (
-        <main>
+        <main className={styles.main}>
             <CriarTarefa onAdicionarTarefa={adicionarTarefa} />
-            <div className="tarefas-container">
-                <ListaTarefas tarefas={tarefasPendentes} onConcluirTarefa={concluirTarefa} onFixarTarefa={fixarTarefa} onDesafixarTarefa={desafixarTarefa}/>
-                <Fixadas tarefas={tarefasFixadas} onConcluirTarefa={concluirTarefa} onDesafixarTarefa={desafixarTarefa}/>
+            <div className={styles.tarefasContainer}>
+                <ListaTarefas 
+                    tarefas={tarefasPendentes} 
+                    onConcluirTarefa={concluirTarefa} 
+                    onFixarTarefa={fixarTarefa} 
+                    onDesafixarTarefa={desafixarTarefa}
+                />
+                <Fixadas 
+                    tarefas={tarefasFixadas} 
+                    onConcluirTarefa={concluirTarefa} 
+                    onDesafixarTarefa={desafixarTarefa}
+                />
             </div>
-                <Concluidas tarefas={tarefasConcluidas} onConcluirTarefa={concluirTarefa}/>
+            <Concluidas 
+                tarefas={tarefasConcluidas} 
+                onConcluirTarefa={concluirTarefa}
+            />
         </main>
     );
 }

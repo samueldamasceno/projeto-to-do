@@ -1,4 +1,4 @@
-header {
+.header {
     position: relative;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -10,7 +10,7 @@ header {
     background-color: var(--tom-vermelho);
 }
 
-h4 {
+.titulo {
     position: relative;
     font-size: 32px;
     color: var(--tom-cinza-3);
@@ -18,18 +18,18 @@ h4 {
     transition: color 0.3s;
 }
 
-.titulo:hover{
+.titulo:hover {
     color: var(--tom-vermelho-2);
 }
 
-.btn-container {
+.btnContainer {
     display: flex;
-    justify-content:flex-end;
+    justify-content: flex-end;
     gap: 5%;
     margin-right: 10%;
 }
 
-.btn-container button {
+.btnContainer button {
     font-family: var(--fonte-3);
     border: none;
     padding: 10px 20px;
@@ -39,18 +39,18 @@ h4 {
     transition: background-color 0.3s;
 }
 
-.btn-cad {
+.btnCad {
     background-color: var(--tom-azul);
 }
 
-.btn-cad:hover {
+.btnCad:hover {
     background-color: var(--tom-azul-2);
 }
 
-.btn-login {
+.btnLogin {
     background-color: var(--tom-amarelo);
 }
 
-.btn-login:hover {
+.btnLogin:hover {
     background-color: var(--tom-amarelo-2);
 }

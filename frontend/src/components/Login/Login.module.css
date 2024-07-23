@@ -1,4 +1,4 @@
-main {
+.main {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -6,7 +6,7 @@ main {
     margin: 0;
 }
 
-form {
+.form {
     display: flex;
     flex-direction: column;
     margin: 50px;
@@ -19,11 +19,11 @@ form {
     background-color: var(--tom-salmao);
 }
 
-form label {
+.formLabel {
     margin-bottom: 20px;
 }
 
-form input {
+.formInput {
     height: 40px;
     width: 100%;
     padding: 10px;
@@ -32,12 +32,12 @@ form input {
     font-size: 1em;
 }
 
-form input::placeholder {
+.formInput::placeholder {
     color: var(--tom-cinza-2);
     font-size: 1em;
 }
 
-form button {
+.submitButton {
     height: 50px;
     width: 100%;
     margin-top: 20px;
@@ -50,6 +50,6 @@ form button {
     font-size: 1.2em;
 }
 
-form button:hover {
+.submitButton:hover {
     background-color: var(--tom-vermelho-2);
 }

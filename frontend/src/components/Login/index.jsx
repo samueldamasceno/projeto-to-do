@@ -1,27 +1,24 @@
-import './style.css';
+import React from 'react';
 import Header from '../Header';
 import Footer from '../Footer';
-
-import React from 'react';
-
 import { logarUsuario } from '../../utils/auth';
 import useCsrfToken from '../../hooks/useCsrfToken';
 import { useNavigate } from 'react-router-dom';
+import styles from './Login.module.css';
 
 function Login () {
     const csrfToken = useCsrfToken();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-    
         const formData = new FormData(e.target);
         const email = formData.get('email');
         const senha = formData.get('senha');
     
         try {
-            const response = await fetch('http://localhost:8000/api/login/', {
+            const response = await fetch('http://localhost:8000/api/usuarios/login/', {
                 method: 'POST',
                 credentials: 'include',
                 headers: {
@@ -44,7 +41,6 @@ function Login () {
 
             navigate('/');
 
-    
         } catch (error) {
             console.error('Erro:', error);
         }
@@ -53,15 +49,15 @@ function Login () {
     return (
         <div>
             <Header />
-            <main>
-                <form onSubmit={handleSubmit}>
-                    <label>
-                        <input type="email" name="email" placeholder="Email" required />
+            <main className={styles.main}>
+                <form className={styles.form} onSubmit={handleSubmit}>
+                    <label className={styles.formLabel}>
+                        <input type="email" name="email" placeholder="Email" className={styles.formInput} required />
                     </label>
-                    <label>
-                        <input type="password" name="senha" placeholder="Senha" required />
+                    <label className={styles.formLabel}>
+                        <input type="password" name="senha" placeholder="Senha" className={styles.formInput} required />
                     </label>
-                    <button type="submit">Login</button>
+                    <button type="submit" className={styles.submitButton}>Login</button>
                 </form>
             </main>
             <Footer />

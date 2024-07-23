@@ -1,36 +1,31 @@
-import React, {useState} from 'react';
-import './style.css';
+import React, { useState } from "react";
+import styles from './CriarTarefa.module.css';
 
-function CriarTarefa({onAdicionarTarefa}) {
-    const [nomeTarefa, setNomeTarefa] = useState('');
+function CriarTarefa({ onAdicionarTarefa }) {
+    const [nome, setNome] = useState("");
 
-    const enviarForm = (e) => {
-        e.preventDefault();
-
-        if (nomeTarefa.trim() === '') {
-            alert('Você não pode adicionar uma tarefa vazia.');
-            return;
+    const adicionarTarefa = () => {
+        if (nome) {
+            onAdicionarTarefa(nome);
+            setNome("");
         }
-
-        onAdicionarTarefa(nomeTarefa);
-        setNomeTarefa('');
-
-
     }
 
     return (
-        <section className="criar-tarefa">
+        <section className={styles.criarTarefa}>
             <h4>Criar Tarefa</h4>
-            <form className='form-criar' onSubmit={enviarForm}>
+            <div className={styles.formCriar}>
                 <input
+                    className={styles.inputTarefa}
                     type="text"
+                    value={nome}
+                    onChange={(e) => setNome(e.target.value)}
                     placeholder="Nome da tarefa"
-                    className="input-tarefa"
-                    value={nomeTarefa}
-                    onChange={(e) => setNomeTarefa(e.target.value)}
                 />
-                <button type="submit" className="btn-criar">Adicionar Tarefa</button>
-            </form>
+                <button className={styles.btnCriar} onClick={adicionarTarefa}>
+                    Adicionar
+                </button>
+            </div>
         </section>
     );
 }

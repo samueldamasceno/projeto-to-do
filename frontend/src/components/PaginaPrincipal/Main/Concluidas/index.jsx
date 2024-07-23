@@ -1,4 +1,5 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
+import styles from './Concluidas.module.css';
 
 function Concluidas({ tarefas, onConcluirTarefa }) {
     const [paginaAtual, setPaginaAtual] = useState(1);
@@ -26,22 +27,22 @@ function Concluidas({ tarefas, onConcluirTarefa }) {
     }
 
     return (
-        <section className="lista-concluidas">
+        <section className={styles.listaConcluidas}>
             <h4>Tarefas Concluídas</h4>
-            <div className="colunas">
-                <ul className="coluna">
+            <div className={styles.colunas}>
+                <ul className={styles.coluna}>
                     {coluna1.map(tarefa => (
-                    <li className="tarefa" key={tarefa.id} onClick={() => onConcluirTarefa(tarefa.id)}>{tarefa.nome}</li>
+                        <li className={styles.tarefa} key={tarefa.id} onClick={() => onConcluirTarefa(tarefa.id)}>{tarefa.nome}</li>
                     ))}
                 </ul>
-                <ul className="coluna">
+                <ul className={styles.coluna}>
                     {coluna2.map(tarefa => (
-                        <li className="tarefa" key={tarefa.id} onClick={() => onConcluirTarefa(tarefa.id)}>{tarefa.nome}</li>
+                        <li className={styles.tarefa} key={tarefa.id} onClick={() => onConcluirTarefa(tarefa.id)}>{tarefa.nome}</li>
                     ))}
                 </ul>
             </div>
             {paginas > 1 && (
-                <div className="paginacao">
+                <div className={styles.paginacao}>
                     <button onClick={paginaAnterior} disabled={paginaAtual === 1}>
                         Anterior
                     </button>

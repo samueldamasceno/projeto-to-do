@@ -6,7 +6,7 @@ const useCsrfToken = () => {
     useEffect(() => {
         const fetchCsrfToken = async () => {
             try {
-                const response = await fetch('http://localhost:8000/api/csrf-token/', {
+                const response = await fetch('http://localhost:8000/csrf-token/', {
                     method: 'GET',
                     credentials: 'include'
                 });
