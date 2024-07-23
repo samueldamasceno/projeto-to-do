@@ -54,3 +54,11 @@
 .btnLogin:hover {
     background-color: var(--tom-amarelo-2);
 }
+
+.logout {
+    background-color: var(--tom-vermelho-2);
+}
+
+.logout:hover {
+    background-color: var(--tom-vermelho-3);
+}

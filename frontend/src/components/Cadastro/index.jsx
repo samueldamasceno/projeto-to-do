@@ -1,11 +1,17 @@
 import React from 'react';
+
 import Header from '../Header';
 import Footer from '../Footer';
+
 import useCsrfToken from '../../hooks/useCsrfToken';
 import styles from './Cadastro.module.css';
 
+import { useNavigate } from 'react-router-dom';
+import { Store } from 'react-notifications-component';
+
 function Cadastro () {
     const csrfToken = useCsrfToken()
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -36,9 +42,36 @@ function Cadastro () {
             console.log('Cadastro efetuado com sucesso:', data);
 
             e.target.reset();
+            navigate('/login');
+
+            Store.addNotification({
+                title: 'Sucesso!',
+                message: 'Cadastro efetuado com sucesso!',
+                type:'success',
+                container: 'top-right',
+                animationIn: ['animated', 'fadeIn'],
+                animationOut: ['animated', 'fadeOut'],
+                dismiss: {
+                    duration: 5000,
+                    onScreen: true
+                }
+            });
 
         } catch (error) {
             console.error('Erro:', error);
+
+            Store.addNotification({
+                title: 'Erro!',
+                message: 'Erro ao fazer cadastro: '+ error.message,
+                type:'danger',
+                container: 'top-right',
+                animationIn: ['animated', 'fadeIn'],
+                animationOut: ['animated', 'fadeOut'],
+                dismiss: {
+                    duration: 5000,
+                    onScreen: true
+                }
+            });
         }
     };
 

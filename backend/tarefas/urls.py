@@ -3,7 +3,6 @@ from rest_framework.routers import DefaultRouter
 from .views import \
 TarefaConcluidaViewSet, TarefaPendenteViewSet, concluir_tarefa, TarefaFixadaViewSet, fixar_tarefa, desafixar_tarefa
 
-
 router = DefaultRouter()
 router.register(r'concluidas', TarefaConcluidaViewSet, basename='concluidas')
 router.register(r'pendentes', TarefaPendenteViewSet, basename='pendentes')

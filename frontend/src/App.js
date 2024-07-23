@@ -1,7 +1,10 @@
-import './App.css';
-import React from'react';
+import React from 'react';
+import { ReactNotifications } from 'react-notifications-component'
+import 'react-notifications-component/dist/theme.css';
 
-import { BrowserRouter as Router, Route, Routes, Navigate } from'react-router-dom';
+import './App.css';
+
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 
 import PaginaPrincipal from './components/PaginaPrincipal';
 import Login from './components/Login';
@@ -12,6 +15,7 @@ function App() {
   return (
     <Router>
       <div className="App">
+        <ReactNotifications />
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />

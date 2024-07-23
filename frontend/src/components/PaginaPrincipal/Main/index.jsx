@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { Store } from 'react-notifications-component'; 
+
 import styles from './Main.module.css';
 
 import CriarTarefa from './CriarTarefa';
@@ -35,6 +37,17 @@ function Main() {
 
             } catch (error) {
                 console.error('Erro:', error);
+
+                Store.addNotification({
+                    title: 'Erro ao carregar tarefas',
+                    message: error.message,
+                    type: 'danger',
+                    container: 'top-right',
+                    dismiss: {
+                        duration: 5000,
+                        pauseOnHover: true,
+                    },
+                });
             }
         };
 
@@ -60,6 +73,17 @@ function Main() {
             setTarefasPendentes([...tarefasPendentes, tarefaCriada]);
         } catch (error) {
             console.error('Erro:', error);
+
+            Store.addNotification({
+                title: 'Erro ao adicionar tarefa',
+                message: error.message,
+                type: 'danger',
+                container: 'top-right',
+                dismiss: {
+                    duration: 5000,
+                    pauseOnHover: true,
+                },
+            });
         }
     };
 
@@ -94,6 +118,17 @@ function Main() {
             }
         } catch (error) {
             console.log("Erro: ", error);
+
+            Store.addNotification({
+                title: 'Erro ao concluir tarefa',
+                message: error.message,
+                type: 'danger',
+                container: 'top-right',
+                dismiss: {
+                    duration: 5000,
+                    pauseOnHover: true,
+                },
+            });
         }
     };
 
@@ -121,6 +156,17 @@ function Main() {
 
         } catch (error) {
             console.log("Erro: ", error);
+
+            Store.addNotification({
+                title: 'Erro ao fixar tarefa',
+                message: error.message,
+                type: 'danger',
+                container: 'top-right',
+                dismiss: {
+                    duration: 5000,
+                    pauseOnHover: true,
+                },
+            });
         }
     };
     
@@ -149,6 +195,17 @@ function Main() {
 
         } catch (error) {
             console.log("Erro: ", error);
+
+            Store.addNotification({
+                title: 'Erro ao desafixar tarefa',
+                message: error.message,
+                type: 'danger',
+                container: 'top-right',
+                dismiss: {
+                    duration: 5000,
+                    pauseOnHover: true,
+                },
+            });
         }
     };
 

@@ -1,10 +1,14 @@
 import React from 'react';
+
 import Header from '../Header';
 import Footer from '../Footer';
+
 import { logarUsuario } from '../../utils/auth';
 import useCsrfToken from '../../hooks/useCsrfToken';
 import { useNavigate } from 'react-router-dom';
+
 import styles from './Login.module.css';
+import { Store } from 'react-notifications-component';
 
 function Login () {
     const csrfToken = useCsrfToken();
@@ -36,13 +40,37 @@ function Login () {
             console.log('Login efetuado com sucesso:', data);
     
             logarUsuario(true);
-    
             e.target.reset();
-
             navigate('/');
+
+            Store.addNotification({
+                title: 'Login feito com sucesso!',
+                message: 'Bem-vindo!',
+                type:'success',
+                container: 'top-right',
+                animationIn: ['animated', 'fadeIn'],
+                animationOut: ['animated', 'fadeOut'],
+                dismiss: {
+                    duration: 5000,
+                    onScreen: 5000,
+                }
+            });
 
         } catch (error) {
             console.error('Erro:', error);
+
+            Store.addNotification({
+                title: 'Erro',
+                message: error.message,
+                type: 'danger',
+                container: 'top-right',
+                animationIn: ['animated', 'fadeIn'],
+                animationOut: ['animated', 'fadeOut'],
+                dismiss: {
+                    duration: 5000,
+                    onScreen: 5000,
+                }
+            });
         }
     };
 

@@ -1,64 +1,90 @@
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
 
 from django.shortcuts import get_object_or_404
-from django.http import JsonResponse, request
 
 from .models import Tarefa
 from .serializers import TarefaSerializer
 
 @api_view(['PUT'])
 def concluir_tarefa(request, id):
-    if request.method == 'PUT':
-        tarefa = get_object_or_404(Tarefa, pk=id)
-        if tarefa.status in ['A', 'P']:
-            tarefa.status = 'C'
-            mensagem = 'Tarefa concluída'
-        elif tarefa.status == 'C':
-            tarefa.status = 'P'
-            mensagem = 'Tarefa pendente'
-        else:
-            return JsonResponse({'status': 'error', 'message': 'Status inválido'})
-        
-        tarefa.save()
-        return JsonResponse({'status': 'ok', 'message': mensagem})
+    try:
+        tarefa = Tarefa.objects.get(pk=id, usuario=request.user)
+    except Tarefa.DoesNotExist:
+        return Response({'status': 'error', 'message': 'Tarefa não encontrada'}, status=status.HTTP_404_NOT_FOUND)
     
-def fixar_tarefa(request, id):
-    if request.method == 'PUT':
-        tarefa = get_object_or_404(Tarefa, pk=id)
-        tarefa.fixada = True
-        tarefa.save()
-        return JsonResponse({'status': 'ok','message': 'Tarefa fixada'})
+    if tarefa.status in ['A', 'P']:
+        tarefa.status = 'C'
+        mensagem = 'Tarefa concluída'
+    elif tarefa.status == 'C':
+        tarefa.status = 'P'
+        mensagem = 'Tarefa pendente'
     else:
-        return JsonResponse({'status': 'error','message': 'Método não permitido'})
+        return Response({'status': 'error', 'message': 'Status inválido'}, status=status.HTTP_400_BAD_REQUEST)
 
+    tarefa.save()
+    return Response({'status': 'ok', 'message': mensagem})
+
+@api_view(['PUT'])
+def fixar_tarefa(request, id):
+    try:
+        tarefa = Tarefa.objects.get(pk=id, usuario=request.user)
+    except Tarefa.DoesNotExist:
+        return Response({'status': 'error', 'message': 'Tarefa não encontrada'}, status=status.HTTP_404_NOT_FOUND)
+    
+    tarefa.fixada = True
+    tarefa.save()
+    return Response({'status': 'ok', 'message': 'Tarefa fixada'})
+
+@api_view(['PUT'])
 def desafixar_tarefa(request, id):
-    if request.method == 'PUT':
-        tarefa = get_object_or_404(Tarefa, pk=id)
-        tarefa.fixada = False
-        tarefa.save()
-        return JsonResponse({'status': 'ok','message': 'Tarefa desfixada'})
-    else:
-        return JsonResponse({'status': 'error','message': 'Método não permitido'})
+    try:
+        tarefa = Tarefa.objects.get(pk=id, usuario=request.user)
+    except Tarefa.DoesNotExist:
+        return Response({'status': 'error', 'message': 'Tarefa não encontrada'}, status=status.HTTP_404_NOT_FOUND)
+    
+    tarefa.fixada = False
+    tarefa.save()
+    return Response({'status': 'ok', 'message': 'Tarefa desfixada'})
 
 class TarefaPendenteViewSet(viewsets.ModelViewSet):
-    queryset = Tarefa.objects.filter(status='P')
     serializer_class = TarefaSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = Tarefa.objects.filter(status='P', usuario=self.request.user)
+        if not queryset.exists():
+            return Response({'status': 'info', 'message': 'Nenhuma tarefa pendente encontrada'}, status=status.HTTP_404_NOT_FOUND)
+        return queryset
 
     def get_object(self):
-        return get_object_or_404(Tarefa, pk=self.kwargs['pk'])
+        return get_object_or_404(Tarefa, pk=self.kwargs['pk'], usuario=self.request.user)
 
 class TarefaConcluidaViewSet(viewsets.ModelViewSet):
-    queryset = Tarefa.objects.filter(status='C')
     serializer_class = TarefaSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = Tarefa.objects.filter(status='C', usuario=self.request.user)
+        if not queryset.exists():
+            return Response({'status': 'info', 'message': 'Nenhuma tarefa concluída encontrada'}, status=status.HTTP_404_NOT_FOUND)
+        return queryset
 
     def get_object(self):
-        return get_object_or_404(Tarefa, pk=self.kwargs['pk'])
+        return get_object_or_404(Tarefa, pk=self.kwargs['pk'], usuario=self.request.user)
 
 class TarefaFixadaViewSet(viewsets.ModelViewSet):
-    queryset = Tarefa.objects.filter(fixada='True')
     serializer_class = TarefaSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = Tarefa.objects.filter(fixada=True, usuario=self.request.user)
+        if not queryset.exists():
+            return Response({'status': 'info', 'message': 'Nenhuma tarefa fixada encontrada'}, status=status.HTTP_404_NOT_FOUND)
+        return queryset
 
     def get_object(self):
-        return get_object_or_404(Tarefa, pk=self.kwargs['pk'])
-    
+        return get_object_or_404(Tarefa, pk=self.kwargs['pk'], usuario=self.request.user)
