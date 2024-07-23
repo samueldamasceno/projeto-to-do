@@ -107,18 +107,23 @@ function Main() {
                 },
                 credentials: 'include',
             });
-
+    
             if (!resposta.ok) throw new Error('Erro ao fixar tarefa');
-
+    
             const tarefaAtualizada = tarefasPendentes.find(tarefa => tarefa.id === id);
-
             if (!tarefaAtualizada) throw new Error('Tarefa não encontrada');
-
+    
+            setTarefasPendentes(tarefasPendentes.map(tarefa =>
+                tarefa.id === id ? { ...tarefa, fixada: true } : tarefa
+            ));
+    
             setTarefasFixadas([...tarefasFixadas, { ...tarefaAtualizada, fixada: true }]);
+
         } catch (error) {
             console.log("Erro: ", error);
         }
     };
+    
 
     const desafixarTarefa = async (id) => {
         try {
@@ -130,10 +135,18 @@ function Main() {
                 },
                 credentials: 'include',
             });
-
+            
             if (!resposta.ok) throw new Error('Erro ao desafixar tarefa');
+            
+            const tarefaAtualizada = tarefasPendentes.find(tarefa => tarefa.id === id);
+            if (!tarefaAtualizada) throw new Error('Tarefa não encontrada');
+
+            setTarefasPendentes(tarefasPendentes.map(tarefa =>
+                tarefa.id === id ? { ...tarefa, fixada: false } : tarefa
+            ));
 
             setTarefasFixadas(tarefasFixadas.filter(tarefa => tarefa.id !== id));
+
         } catch (error) {
             console.log("Erro: ", error);
         }
