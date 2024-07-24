@@ -62,3 +62,17 @@
 .logout:hover {
     background-color: var(--tom-vermelho-3);
 }
+
+.btnTema {
+    font-family: var(--fonte-3);
+    padding: 10px;
+    background-color: var(--tom-verde);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btnTema:hover {
+    background-color: var(--tom-verde-2);
+}

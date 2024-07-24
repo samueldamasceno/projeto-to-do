@@ -37,7 +37,15 @@
 
 body {
   font-family: var(--fonte-1);
+}
+
+body.light-theme {
   background-color: var(--tom-cinza);
+  color: var(--tom-cinza-3);
+}
+
+body.dark-theme {
+  background-color: var(--tom-cinza-4);
   color: var(--tom-cinza-3);
 }
 

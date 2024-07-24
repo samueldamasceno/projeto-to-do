@@ -9,20 +9,24 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import PaginaPrincipal from './components/PaginaPrincipal';
 import Login from './components/Login';
 import Cadastro from './components/Cadastro';
+
 import { usuarioLogado } from './utils/auth';
+import { TemaProvider } from './hooks/useTema';
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <ReactNotifications />
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/cadastro" element={<Cadastro />} />
-          <Route path="/" element={usuarioLogado() ? <PaginaPrincipal /> : <Navigate to="/login" />}></Route>
-        </Routes>
-      </div>
-    </Router>
+    <TemaProvider>
+      <Router>
+        <div className="App">
+          <ReactNotifications />
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/cadastro" element={<Cadastro />} />
+            <Route path="/" element={usuarioLogado() ? <PaginaPrincipal /> : <Navigate to="/login" />}></Route>
+          </Routes>
+        </div>
+      </Router>
+    </TemaProvider>
   );
 }
 

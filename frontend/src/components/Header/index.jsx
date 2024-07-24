@@ -5,9 +5,11 @@ import { Store } from 'react-notifications-component';
 import styles from './Header.module.css';
 
 import { logout } from '../../utils/auth';
-
+import { useTema } from '../../hooks/useTema';
 
 function Header() {
+    const {tema, mudarTema} = useTema();
+
     function handleLogout() {
         logout();
 
@@ -22,7 +24,11 @@ function Header() {
 
     return (
         <header className={styles.header}>
-            <div></div>
+            <div>
+                <button className={styles.btnTema} onClick={mudarTema}>
+                    {tema ? 'modo claro' : 'modo escuro'}
+                </button>
+            </div>
 
             <Link to="/">
                 <h4 className={styles.titulo}>lista de tarefas</h4>
