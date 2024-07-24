@@ -20,24 +20,30 @@ function Main() {
     useEffect(() => {
         const fetchTarefas = async () => {
             try {
-                const responsePendentes = await fetch('http://localhost:8000/api/tarefas/pendentes/');
+                const responsePendentes = await fetch('http://localhost:8000/api/tarefas/pendentes/', {
+                    credentials: 'include'
+                });
                 if (!responsePendentes.ok) throw new Error('Erro ao buscar tarefas pendentes');
                 const dataPendentes = await responsePendentes.json();
                 setTarefasPendentes(dataPendentes);
-
-                const responseConcluidas = await fetch('http://localhost:8000/api/tarefas/concluidas/');
+    
+                const responseConcluidas = await fetch('http://localhost:8000/api/tarefas/concluidas/', {
+                    credentials: 'include'
+                });
                 if (!responseConcluidas.ok) throw new Error('Erro ao buscar tarefas concluídas');
                 const dataConcluidas = await responseConcluidas.json();
                 setTarefasConcluidas(dataConcluidas);
-
-                const responseFixadas = await fetch('http://localhost:8000/api/tarefas/fixadas/');
+    
+                const responseFixadas = await fetch('http://localhost:8000/api/tarefas/fixadas/', {
+                    credentials: 'include'
+                });
                 if (!responseFixadas.ok) throw new Error('Erro ao buscar tarefas fixadas');
                 const dataFixadas = await responseFixadas.json();
                 setTarefasFixadas(dataFixadas);
-
+                
             } catch (error) {
                 console.error('Erro:', error);
-
+    
                 Store.addNotification({
                     title: 'Erro ao carregar tarefas',
                     message: error.message,
@@ -50,9 +56,10 @@ function Main() {
                 });
             }
         };
-
+    
         fetchTarefas();
     }, []);
+    
 
     const adicionarTarefa = async (nomeTarefa) => {
         const novaTarefa = { nome: nomeTarefa };

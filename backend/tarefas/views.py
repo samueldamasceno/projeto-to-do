@@ -1,7 +1,7 @@
 from rest_framework import viewsets
-from rest_framework.decorators import api_view
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.decorators import api_view, action
 from rest_framework import status
 
 from django.shortcuts import get_object_or_404
@@ -57,11 +57,11 @@ class TarefaPendenteViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = Tarefa.objects.filter(status='P', usuario=self.request.user)
         if not queryset.exists():
-            return Response({'status': 'info', 'message': 'Nenhuma tarefa pendente encontrada'}, status=status.HTTP_404_NOT_FOUND)
+            return []
         return queryset
-
-    def get_object(self):
-        return get_object_or_404(Tarefa, pk=self.kwargs['pk'], usuario=self.request.user)
+    
+    def perform_create(self, serializer):
+        serializer.save(usuario=self.request.user)
 
 class TarefaConcluidaViewSet(viewsets.ModelViewSet):
     serializer_class = TarefaSerializer
@@ -70,11 +70,8 @@ class TarefaConcluidaViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = Tarefa.objects.filter(status='C', usuario=self.request.user)
         if not queryset.exists():
-            return Response({'status': 'info', 'message': 'Nenhuma tarefa concluída encontrada'}, status=status.HTTP_404_NOT_FOUND)
+            return []
         return queryset
-
-    def get_object(self):
-        return get_object_or_404(Tarefa, pk=self.kwargs['pk'], usuario=self.request.user)
 
 class TarefaFixadaViewSet(viewsets.ModelViewSet):
     serializer_class = TarefaSerializer
@@ -83,8 +80,5 @@ class TarefaFixadaViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = Tarefa.objects.filter(fixada=True, usuario=self.request.user)
         if not queryset.exists():
-            return Response({'status': 'info', 'message': 'Nenhuma tarefa fixada encontrada'}, status=status.HTTP_404_NOT_FOUND)
+            return []
         return queryset
-
-    def get_object(self):
-        return get_object_or_404(Tarefa, pk=self.kwargs['pk'], usuario=self.request.user)

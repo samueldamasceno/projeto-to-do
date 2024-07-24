@@ -3,7 +3,6 @@ import React from 'react';
 import Header from '../Header';
 import Footer from '../Footer';
 
-import { logarUsuario } from '../../utils/auth';
 import useCsrfToken from '../../hooks/useCsrfToken';
 import { useNavigate } from 'react-router-dom';
 
@@ -39,7 +38,6 @@ function Login () {
             const data = await response.json();
             console.log('Login efetuado com sucesso:', data);
     
-            logarUsuario(true);
             e.target.reset();
             navigate('/');
 
