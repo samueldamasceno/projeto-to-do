@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import styles from './Concluidas.module.css';
+import lixeira from '../../../../img/lixo.png';
 
-function Concluidas({ tarefas, onConcluirTarefa }) {
+function Concluidas({ tarefas, onConcluirTarefa, onDeleteTarefa }) {
+    function deletarTarefa(id) {
+        onDeleteTarefa(id);
+    }
+
     const [paginaAtual, setPaginaAtual] = useState(1);
     const tarefasPorPagina = 20;
 
@@ -32,12 +37,28 @@ function Concluidas({ tarefas, onConcluirTarefa }) {
             <div className={styles.colunas}>
                 <ul className={styles.coluna}>
                     {coluna1.map(tarefa => (
-                        <li className={styles.tarefa} key={tarefa.id} onClick={() => onConcluirTarefa(tarefa.id)}>{tarefa.nome}</li>
+                        <li className={styles.tarefa} key={tarefa.id} onClick={() => onConcluirTarefa(tarefa.id)}>
+                            <span>{tarefa.nome}</span>
+                            <button className={styles.btnDel} onClick={(e) => {e.stopPropagation(); deletarTarefa(tarefa.id)}}>
+                            <img 
+                                src={lixeira} 
+                                alt="Deletar" 
+                            />
+                            </button>
+                            </li>
                     ))}
                 </ul>
                 <ul className={styles.coluna}>
                     {coluna2.map(tarefa => (
-                        <li className={styles.tarefa} key={tarefa.id} onClick={() => onConcluirTarefa(tarefa.id)}>{tarefa.nome}</li>
+                        <li className={styles.tarefa} key={tarefa.id} onClick={() => onConcluirTarefa(tarefa.id)}>
+                            <span>{tarefa.nome}</span>
+                            <button className={styles.btnDel} onClick={(e) => {e.stopPropagation(); deletarTarefa(tarefa.id)}}>
+                            <img 
+                                src={lixeira} 
+                                alt="Deletar" 
+                            />
+                            </button>
+                        </li>
                     ))}
                 </ul>
             </div>

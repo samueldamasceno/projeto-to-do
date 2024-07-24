@@ -9,6 +9,7 @@ import Fixadas from './Fixadas';
 import Concluidas from './Concluidas';
 
 import useCsrfToken from '../../../hooks/useCsrfToken';
+import { store } from 'react-notifications-component';
 
 function Main() {
     const csrfToken = useCsrfToken();
@@ -216,6 +217,49 @@ function Main() {
         }
     };
 
+    const deletarTarefa = async (id) => {
+        try {
+            const resposta = await fetch(`http://localhost:8000/api/tarefas/excluir/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                },
+                credentials: 'include',
+            });
+            
+            if (!resposta.ok) throw new Error('Erro ao deletar tarefa');
+            
+            setTarefasPendentes(tarefasPendentes.filter(tarefa => tarefa.id!== id));
+            setTarefasConcluidas(tarefasConcluidas.filter(tarefa => tarefa.id!== id));
+            setTarefasFixadas(tarefasFixadas.filter(tarefa => tarefa.id!== id));
+
+            Store.addNotification({
+                title: 'Tarefa excluída com sucesso',
+                message: 'Tarefa excluída com sucesso.',
+                type:'success',
+                container: 'top-right',
+                dismiss: {
+                    duration: 5000,
+                    pauseOnHover: true,
+                },
+            })
+            
+        } catch (error) {
+            console.log("Erro: ", error);
+            
+            Store.addNotification({
+                title: 'Erro ao excluir tarefa',
+                message: error.message,
+                type: 'danger',
+                container: 'top-right',
+                dismiss: {
+                    duration: 5000,
+                    pauseOnHover: true,
+                },
+            });
+        }
+    }
+
     return (
         <main className={styles.main}>
             <CriarTarefa onAdicionarTarefa={adicionarTarefa} />
@@ -225,16 +269,19 @@ function Main() {
                     onConcluirTarefa={concluirTarefa} 
                     onFixarTarefa={fixarTarefa} 
                     onDesafixarTarefa={desafixarTarefa}
+                    onDeleteTarefa={deletarTarefa}
                 />
                 <Fixadas 
                     tarefas={tarefasFixadas} 
                     onConcluirTarefa={concluirTarefa} 
                     onDesafixarTarefa={desafixarTarefa}
+                    onDeleteTarefa={deletarTarefa}
                 />
             </div>
             <Concluidas 
                 tarefas={tarefasConcluidas} 
                 onConcluirTarefa={concluirTarefa}
+                onDeleteTarefa={deletarTarefa}
             />
         </main>
     );

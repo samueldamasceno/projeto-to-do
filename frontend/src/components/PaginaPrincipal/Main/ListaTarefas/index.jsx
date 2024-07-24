@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from "react";
 import alfinete from '../../../../img/alfinete.png';
 import alfineteBranco from '../../../../img/alfinete-branco.png';
+import lixeira from '../../../../img/lixo.png';
 import styles from './ListaTarefas.module.css';
 
-function ListaTarefas({ tarefas, onFixarTarefa, onDesafixarTarefa, onConcluirTarefa }) {
+function ListaTarefas({ tarefas, onFixarTarefa, onDesafixarTarefa, onConcluirTarefa, onDeleteTarefa }) {
     const [paginaAtual, setPaginaAtual] = useState(1);
     const [tarefasLocal, setTarefasLocal] = useState(tarefas);
 
     useEffect(() => {
         setTarefasLocal(tarefas);
     }, [tarefas]);
+
+    function deletarTarefa(id) {
+        setTarefasLocal(tarefasLocal.filter(tarefa => tarefa.id!== id));
+        onDeleteTarefa(id);
+    }
 
     const tarefasPorPagina = 10;
     const indexUltimaTarefa = paginaAtual * tarefasPorPagina;
@@ -46,6 +52,12 @@ function ListaTarefas({ tarefas, onFixarTarefa, onDesafixarTarefa, onConcluirTar
                         onClick={() => onConcluirTarefa(tarefa.id)}
                     >
                         <span>{tarefa.nome}</span>
+                        <button onClick={(e) => {e.stopPropagation(); deletarTarefa(tarefa.id)}}>
+                            <img 
+                                src={lixeira} 
+                                alt="Deletar" 
+                            />
+                        </button>
                         <button onClick={(e) => { e.stopPropagation(); handleFixarTarefa(tarefa.id); }}>
                             <img 
                                 src={tarefa.fixada ? alfinete : alfineteBranco} 

@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import alfinete from '../../../../img/alfinete.png';
+import lixeira from '../../../../img/lixo.png';
 import styles from './Fixadas.module.css';
 
-function Fixadas({ tarefas, onConcluirTarefa, onDesafixarTarefa }) {
+function Fixadas({ tarefas, onConcluirTarefa, onDesafixarTarefa, onDeleteTarefa }) {
+    
+    function deletarTarefa(id) {
+        onDeleteTarefa(id);
+    }
+
     const [paginaAtual, setPaginaAtual] = useState(1);
     const tarefasPorPagina = 10;
     const indexUltimaTarefa = paginaAtual * tarefasPorPagina;
@@ -29,6 +35,12 @@ function Fixadas({ tarefas, onConcluirTarefa, onDesafixarTarefa }) {
                         onClick={() => onConcluirTarefa(tarefa.id)}
                     >
                         <span>{tarefa.nome}</span>
+                        <button onClick={(e) => {e.stopPropagation(); deletarTarefa(tarefa.id)}}>
+                            <img 
+                                src={lixeira} 
+                                alt="Deletar" 
+                            />
+                        </button>
                         <button onClick={(e) => { e.stopPropagation(); onDesafixarTarefa(tarefa.id); }}>
                             <img 
                                 src={alfinete} 

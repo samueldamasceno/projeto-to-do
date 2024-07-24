@@ -18,10 +18,14 @@
 }
 
 .coluna li {
-    display: flex;
+    display: grid;
     align-items: center;
     justify-content: center;
     padding: 10px;
     border-bottom: 1px solid var(--tom-cinza-2);
     cursor: pointer;
+}
+
+.btnDel {
+    right: 0;
 }

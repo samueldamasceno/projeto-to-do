@@ -50,6 +50,16 @@ def desafixar_tarefa(request, id):
     tarefa.save()
     return Response({'status': 'ok', 'message': 'Tarefa desfixada'})
 
+@api_view(['DELETE'])
+def excluir_tarefa(request, id):
+    try:
+        tarefa = Tarefa.objects.get(pk=id, usuario=request.user)
+    except Tarefa.DoesNotExist:
+        return Response({'status': 'error', 'message': 'Tarefa não encontrada'}, status=status.HTTP_404_NOT_FOUND)
+    
+    tarefa.delete()
+    return Response({'status': 'ok', 'message': 'Tarefa excluída'})
+
 class TarefaPendenteViewSet(viewsets.ModelViewSet):
     serializer_class = TarefaSerializer
     permission_classes = [IsAuthenticated]
