@@ -29,3 +29,10 @@
 .btnDel {
     right: 0;
 }
+
+.mensagemVazia {
+    margin-top: 2%;
+    padding: 2%;
+    border-radius: 30px;
+    background-color: var(--tom-vermelho);
+}

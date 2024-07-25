@@ -9,7 +9,6 @@ import Fixadas from './Fixadas';
 import Concluidas from './Concluidas';
 
 import useCsrfToken from '../../../hooks/useCsrfToken';
-import { store } from 'react-notifications-component';
 
 function Main() {
     const csrfToken = useCsrfToken();

@@ -6,22 +6,31 @@
 .formCriar {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .inputTarefa {
-    margin: 30px;
+    margin: 20px;
     padding: 10px;
-    border: 1px solid var(--tom-cinza-2);
+    border: none;
     border-radius: 5px;
     margin-bottom: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: 1.3em;
+    font-family: var(--fonte-1);
 }
 
 .btnCriar {
+    width: 30%;
     padding: 10px;
+    margin-top: 5%;
     background-color: var(--tom-vermelho);
+    font-family: var(--fonte-2);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 20px;
     cursor: pointer;
     transition: background-color 0.3s;
 }

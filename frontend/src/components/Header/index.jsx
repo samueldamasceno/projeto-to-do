@@ -1,25 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Store } from 'react-notifications-component';
 
 import styles from './Header.module.css';
 
 import { logout } from '../../utils/auth';
 import { useTema } from '../../hooks/useTema';
 
+import useCsrfToken from '../../hooks/useCsrfToken';
+
 function Header() {
     const {tema, mudarTema} = useTema();
 
-    function handleLogout() {
-        logout();
+    const csrfToken = useCsrfToken();
 
-        Store.addNotification({
-            title: 'Sessão encerrada',
-            message: 'Você foi desconectado com sucesso.',
-            type: 'success',
-            container: 'top-right',
-            dismiss: { duration: 3000 },
-        });
+    function handleLogout() {
+        logout(csrfToken);
     }
 
     return (

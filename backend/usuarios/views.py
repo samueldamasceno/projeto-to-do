@@ -46,3 +46,4 @@ def login(request):
 def logout(request):
     auth_logout(request)
     return Response({'mensagem': 'Logout efetuado com sucesso!'})
+

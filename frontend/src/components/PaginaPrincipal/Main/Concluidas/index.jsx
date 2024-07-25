@@ -23,55 +23,81 @@ function Concluidas({ tarefas, onConcluirTarefa, onDeleteTarefa }) {
         if (paginaAtual < paginas) {
             setPaginaAtual(paginaAtual + 1);
         }
-    }
+    };
 
     const paginaAnterior = () => {
         if (paginaAtual > 1) {
             setPaginaAtual(paginaAtual - 1);
         }
-    }
+    };
 
     return (
         <section className={styles.listaConcluidas}>
             <h4>Tarefas Concluídas</h4>
-            <div className={styles.colunas}>
-                <ul className={styles.coluna}>
-                    {coluna1.map(tarefa => (
-                        <li className={styles.tarefa} key={tarefa.id} onClick={() => onConcluirTarefa(tarefa.id)}>
-                            <span>{tarefa.nome}</span>
-                            <button className={styles.btnDel} onClick={(e) => {e.stopPropagation(); deletarTarefa(tarefa.id)}}>
-                            <img 
-                                src={lixeira} 
-                                alt="Deletar" 
-                            />
+            {tarefasParaMostrar.length === 0 ? (
+                <p className={styles.mensagemVazia}>Nenhuma tarefa concluída.</p>
+            ) : (
+                <>
+                    <div className={styles.colunas}>
+                        <ul className={styles.coluna}>
+                            {coluna1.map(tarefa => (
+                                <li
+                                    className={styles.tarefa}
+                                    key={tarefa.id}
+                                    onClick={() => onConcluirTarefa(tarefa.id)}
+                                >
+                                    <span>{tarefa.nome}</span>
+                                    <button
+                                        className={styles.btnDel}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            deletarTarefa(tarefa.id);
+                                        }}
+                                    >
+                                        <img 
+                                            src={lixeira} 
+                                            alt="Deletar" 
+                                        />
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                        <ul className={styles.coluna}>
+                            {coluna2.map(tarefa => (
+                                <li
+                                    className={styles.tarefa}
+                                    key={tarefa.id}
+                                    onClick={() => onConcluirTarefa(tarefa.id)}
+                                >
+                                    <span>{tarefa.nome}</span>
+                                    <button
+                                        className={styles.btnDel}
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            deletarTarefa(tarefa.id);
+                                        }}
+                                    >
+                                        <img 
+                                            src={lixeira} 
+                                            alt="Deletar" 
+                                        />
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    {paginas > 1 && (
+                        <div className={styles.paginacao}>
+                            <button onClick={paginaAnterior} disabled={paginaAtual === 1}>
+                                Anterior
                             </button>
-                            </li>
-                    ))}
-                </ul>
-                <ul className={styles.coluna}>
-                    {coluna2.map(tarefa => (
-                        <li className={styles.tarefa} key={tarefa.id} onClick={() => onConcluirTarefa(tarefa.id)}>
-                            <span>{tarefa.nome}</span>
-                            <button className={styles.btnDel} onClick={(e) => {e.stopPropagation(); deletarTarefa(tarefa.id)}}>
-                            <img 
-                                src={lixeira} 
-                                alt="Deletar" 
-                            />
+                            <span>{paginaAtual} de {paginas}</span>
+                            <button onClick={proximaPagina} disabled={paginaAtual === paginas}>
+                                Próxima
                             </button>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-            {paginas > 1 && (
-                <div className={styles.paginacao}>
-                    <button onClick={paginaAnterior} disabled={paginaAtual === 1}>
-                        Anterior
-                    </button>
-                    <span>{paginaAtual} de {paginas}</span>
-                    <button onClick={proximaPagina} disabled={paginaAtual === paginas}>
-                        Próxima
-                    </button>
-                </div>
+                        </div>
+                    )}
+                </>
             )}
         </section>
     );

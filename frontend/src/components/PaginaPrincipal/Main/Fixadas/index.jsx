@@ -4,7 +4,6 @@ import lixeira from '../../../../img/lixo.png';
 import styles from './Fixadas.module.css';
 
 function Fixadas({ tarefas, onConcluirTarefa, onDesafixarTarefa, onDeleteTarefa }) {
-    
     function deletarTarefa(id) {
         onDeleteTarefa(id);
     }
@@ -27,39 +26,45 @@ function Fixadas({ tarefas, onConcluirTarefa, onDesafixarTarefa, onDeleteTarefa 
     return (
         <section className={styles.fixadas}>
             <h4>Tarefas Fixadas</h4>
-            <ul>
-                {tarefasParaMostrar.map(tarefa => (
-                    <li
-                        className={styles.tarefa}
-                        key={tarefa.id}
-                        onClick={() => onConcluirTarefa(tarefa.id)}
-                    >
-                        <span>{tarefa.nome}</span>
-                        <button onClick={(e) => {e.stopPropagation(); deletarTarefa(tarefa.id)}}>
-                            <img 
-                                src={lixeira} 
-                                alt="Deletar" 
-                            />
-                        </button>
-                        <button onClick={(e) => { e.stopPropagation(); onDesafixarTarefa(tarefa.id); }}>
-                            <img 
-                                src={alfinete} 
-                                alt="Fixada" 
-                            />
-                        </button>
-                    </li>
-                ))}
-            </ul>
-            {paginas > 1 && (
-                <div className={styles.paginacao}>
-                    <button onClick={paginaAnterior} disabled={paginaAtual === 1}>
-                        Anterior
-                    </button>
-                    <span>{paginaAtual} de {paginas}</span>
-                    <button onClick={proximaPagina} disabled={paginaAtual === paginas}>
-                        Próxima
-                    </button>
-                </div>
+            {tarefasParaMostrar.length === 0 ? (
+                <p className={styles.mensagemVazia}>Nenhuma tarefa fixada.</p>
+            ) : (
+                <>
+                    <ul>
+                        {tarefasParaMostrar.map(tarefa => (
+                            <li
+                                className={styles.tarefa}
+                                key={tarefa.id}
+                                onClick={() => onConcluirTarefa(tarefa.id)}
+                            >
+                                <span>{tarefa.nome}</span>
+                                <button onClick={(e) => { e.stopPropagation(); deletarTarefa(tarefa.id); }}>
+                                    <img 
+                                        src={lixeira} 
+                                        alt="Deletar" 
+                                    />
+                                </button>
+                                <button onClick={(e) => { e.stopPropagation(); onDesafixarTarefa(tarefa.id); }}>
+                                    <img 
+                                        src={alfinete} 
+                                        alt="Fixada" 
+                                    />
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                    {paginas > 1 && (
+                        <div className={styles.paginacao}>
+                            <button onClick={paginaAnterior} disabled={paginaAtual === 1}>
+                                Anterior
+                            </button>
+                            <span>{paginaAtual} de {paginas}</span>
+                            <button onClick={proximaPagina} disabled={paginaAtual === paginas}>
+                                Próxima
+                            </button>
+                        </div>
+                    )}
+                </>
             )}
         </section>
     );

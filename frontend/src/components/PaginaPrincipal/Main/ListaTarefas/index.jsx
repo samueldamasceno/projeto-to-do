@@ -44,39 +44,45 @@ function ListaTarefas({ tarefas, onFixarTarefa, onDesafixarTarefa, onConcluirTar
     return (
         <section className={styles.listaTarefas}>
             <h4>Lista de Tarefas</h4>
-            <ul>
-                {tarefasParaMostrar.map(tarefa => (
-                    <li
-                        className={styles.tarefa}
-                        key={tarefa.id}
-                        onClick={() => onConcluirTarefa(tarefa.id)}
-                    >
-                        <span>{tarefa.nome}</span>
-                        <button onClick={(e) => {e.stopPropagation(); deletarTarefa(tarefa.id)}}>
-                            <img 
-                                src={lixeira} 
-                                alt="Deletar" 
-                            />
-                        </button>
-                        <button onClick={(e) => { e.stopPropagation(); handleFixarTarefa(tarefa.id); }}>
-                            <img 
-                                src={tarefa.fixada ? alfinete : alfineteBranco} 
-                                alt="Fixar/Desafixar" 
-                            />
-                        </button>
-                    </li>
-                ))}
-            </ul>
-            {paginas > 1 && (
-                <div className={styles.paginacao}>
-                    <button onClick={paginaAnterior} disabled={paginaAtual === 1}>
-                        Anterior
-                    </button>
-                    <span>{paginaAtual} de {paginas}</span>
-                    <button onClick={proximaPagina} disabled={paginaAtual === paginas}>
-                        Próxima
-                    </button>
-                </div>
+            {tarefasParaMostrar.length === 0 ? (
+                <p className={styles.mensagemVazia}>Nenhuma tarefa pendente.</p>
+            ) : (
+                <>
+                    <ul>
+                        {tarefasParaMostrar.map(tarefa => (
+                            <li
+                                className={styles.tarefa}
+                                key={tarefa.id}
+                                onClick={() => onConcluirTarefa(tarefa.id)}
+                            >
+                                <span>{tarefa.nome}</span>
+                                <button onClick={(e) => { e.stopPropagation(); deletarTarefa(tarefa.id); }}>
+                                    <img 
+                                        src={lixeira} 
+                                        alt="Deletar" 
+                                    />
+                                </button>
+                                <button onClick={(e) => { e.stopPropagation(); handleFixarTarefa(tarefa.id); }}>
+                                    <img 
+                                        src={tarefa.fixada ? alfinete : alfineteBranco} 
+                                        alt="Fixar/Desafixar" 
+                                    />
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                    {paginas > 1 && (
+                        <div className={styles.paginacao}>
+                            <button onClick={paginaAnterior} disabled={paginaAtual === 1}>
+                                Anterior
+                            </button>
+                            <span>{paginaAtual} de {paginas}</span>
+                            <button onClick={proximaPagina} disabled={paginaAtual === paginas}>
+                                Próxima
+                            </button>
+                        </div>
+                    )}
+                </>
             )}
         </section>
     );
